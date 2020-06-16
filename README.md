@@ -1,4 +1,4 @@
-# vue-mapbox
+# vue-mapbox-test
 
 ## Project setup
 ```
