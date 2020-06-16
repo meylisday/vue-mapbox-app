@@ -19,8 +19,9 @@
 </template>
 
 <script>
-import Dropdown from "./components/Dropdown.vue";
-import Map from "./components/Map.vue";
+
+const Dropdown  = () => import("./components/Dropdown.vue");
+const Map  = () => import("./components/Map.vue");
 
 export default {
   name: "App",
