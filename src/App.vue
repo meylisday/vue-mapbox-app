@@ -1,27 +1,29 @@
 <template>
   <div id="app">
-      <div class="text-left pl-4 mt-3 position-fixed filter">
-        <b-button v-b-toggle.sidebar-1>Filter</b-button>
-      </div>
-      <b-sidebar id="sidebar-1" title="Filter" shadow>
-        <div class="px-3 py-2">
-          <b-form-input v-model="search" placeholder="Enter title"></b-form-input>
-          <Dropdown :label="'Suburb'" :options="suburbs" @on-select="handleselect"></Dropdown>
-          <Dropdown :label="'Stage'" :options="stages" @on-select="handleselect"></Dropdown>
-          <Dropdown :label="'Category'" :options="categories" @on-select="handleselect"></Dropdown>
-          <Dropdown :label="'SubCategory'" :options="subcategories" @on-select="handleselect"></Dropdown>
-          <Dropdown :label="'Status'" :options="statuses" @on-select="handleselect"></Dropdown>
-          <Dropdown :label="'Council'" :options="councils" @on-select="handleselect"></Dropdown>
-        </div>
-      </b-sidebar>
-      <Map :filters="geoDataFilters" :search="search"></Map>
+    <div class="text-left pl-4 mt-3 position-fixed filter d-flex flex-column">
+      <b-button v-b-toggle.sidebar-1>Filter</b-button>
+      <b-button @click="emitZoom()" class="mt-3">Zoom to bounds</b-button>
     </div>
+    <b-sidebar id="sidebar-1" title="Filter" shadow>
+      <div class="px-3 py-2">
+        <b-form-input v-model="search" placeholder="Enter title"></b-form-input>
+        <Dropdown :label="'Suburb'" :options="suburbs" @on-select="handleselect"></Dropdown>
+        <Dropdown :label="'Stage'" :options="stages" @on-select="handleselect"></Dropdown>
+        <Dropdown :label="'Category'" :options="categories" @on-select="handleselect"></Dropdown>
+        <Dropdown :label="'SubCategory'" :options="subcategories" @on-select="handleselect"></Dropdown>
+        <Dropdown :label="'Status'" :options="statuses" @on-select="handleselect"></Dropdown>
+        <Dropdown :label="'Council'" :options="councils" @on-select="handleselect"></Dropdown>
+      </div>
+    </b-sidebar>
+
+    <Map :filters="geoDataFilters" :search="search"></Map>
+  </div>
 </template>
 
 <script>
-
-const Dropdown  = () => import("./components/Dropdown.vue");
-const Map  = () => import("./components/Map.vue");
+const Dropdown = () => import("./components/Dropdown.vue");
+const Map = () => import("./components/Map.vue");
+import { EventBus } from "./event-bus.js";
 
 export default {
   name: "App",
@@ -113,7 +115,7 @@ export default {
         "COFFS HARBOUR",
         "CANADA BAY"
       ],
-      search: ''
+      search: ""
     };
   },
   components: {
@@ -125,6 +127,9 @@ export default {
       return (this.geoDataFilters = Object.assign({}, this.geoDataFilters, {
         [selected.type]: selected.value
       }));
+    },
+    emitZoom() {
+      EventBus.$emit("zoom");
     }
   }
 };
@@ -135,14 +140,13 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 body {
   width: 100%;
   height: 100%;
 }
-.filter{
+.filter {
   z-index: 10;
 }
 </style>

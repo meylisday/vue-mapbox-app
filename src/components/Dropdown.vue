@@ -24,10 +24,6 @@ export default {
   },
   methods: {
     onChange(value) {
-      // if (this.onSelect && typeof this.onSelect === "function"){
-      //   this.onSelect({type: this.label, value});
-      // }
-
       this.$emit('on-select', {type: this.label, value})
     }
   }
